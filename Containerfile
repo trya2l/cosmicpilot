@@ -35,20 +35,37 @@
 ###############################################################################
 
 # Context stage - combine local and imported OCI container resources
+ARG BASE_IMAGE_NAME="base"
+ARG SOURCE_IMAGE="${BASE_IMAGE_NAME}-main"
+ARG BASE_IMAGE="ghcr.io/ublue-os/${SOURCE_IMAGE}"
+ARG COMMON_IMAGE="ghcr.io/projectbluefin/common:latest"
+ARG BREW_IMAGE="ghcr.io/ublue-os/brew:latest"
+
+FROM ${COMMON_IMAGE} as common
+FROM ${BREW_IMAGE} as brew
+
 FROM scratch AS ctx
 
 COPY build /build
 COPY custom /custom
 # Copy from OCI containers to distinct subdirectories to avoid conflicts
 # Note: Renovate can automatically update these :latest tags to SHA-256 digests for reproducibility
-COPY --from=ghcr.io/projectbluefin/common:latest /system_files /oci/common
-COPY --from=ghcr.io/ublue-os/brew:latest /system_files /oci/brew
+# COPY --from=ghcr.io/projectbluefin/common:latest /system_files /system/common
+# COPY --from=ghcr.io/ublue-os/brew:latest /system_files /syst/brew
+
+COPY --from=common /system_files/shared /system_files/shared
+COPY --from=common /system_files/bluefin /system_files/shared
+COPY --from=brew /system_files /system_files/shared
+
+
+
 
 # Base Image - GNOME included
 # FROM ghcr.io/ublue-os/silverblue-main:latest
 
 ## Alternative base images, no desktop included (uncomment to use):
-FROM ghcr.io/ublue-os/base-main:latest    
+# FROM ghcr.io/ublue-os/base-main:latest    
+FROM ${BASE_IMAGE}
 # FROM quay.io/centos-bootc/centos-bootc:stream10
 
 ## Alternative GNOME OS base image (uncomment to use):
