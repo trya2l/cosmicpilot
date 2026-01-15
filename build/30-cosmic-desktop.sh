@@ -83,9 +83,9 @@ systemctl enable cosmic-greeter
 
 # Install additional utilities that work well with COSMIC
 dnf5 install -y \
-    # kitty \
     flatpak \
     xdg-desktop-portal-cosmic
+# kitty \
 
 # echo "Additional utilities installed"
 # echo "::endgroup::"
