@@ -1,4 +1,4 @@
-export image_name := env("IMAGE_NAME", "finpilot")
+export image_name := env("IMAGE_NAME", "cosmicpilot")
 export default_tag := env("DEFAULT_TAG", "stable")
 export bib_image := env("BIB_IMAGE", "quay.io/centos-bootc/bootc-image-builder:latest@sha256:903c01d110b8533f8891f07c69c0ba2377f8d4bc7e963311082b7028c04d529d")
 
@@ -59,7 +59,7 @@ sudoif command *args:
         if [[ "${UID}" -eq 0 ]]; then
             "$@"
         elif [[ "$(command -v sudo)" && -n "${SSH_ASKPASS:-}" ]] && [[ -n "${DISPLAY:-}" || -n "${WAYLAND_DISPLAY:-}" ]]; then
-            /usr/bin/sudo --askpass "$@" || exit 1
+            /usr/bin/sudo "$@" || exit 1
         elif [[ "$(command -v sudo)" ]]; then
             /usr/bin/sudo "$@" || exit 1
         else

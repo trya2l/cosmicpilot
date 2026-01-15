@@ -3,10 +3,8 @@ on:
   schedule:
     - cron: "0 0 * * 0" # Weekly on Sunday at midnight UTC
   workflow_dispatch:
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
-
 jobs:
   delete-older-than-90:
     runs-on: ubuntu-latest
@@ -20,7 +18,7 @@ jobs:
           # IMPORTANT: Update this to match your image name from Containerfile (line 9)
           # This should match the "# Name: your-repo-name" comment in your Containerfile
           # Example: If your Containerfile has "# Name: my-custom-os", use "my-custom-os" here
-          packages: finpilot
+          packages: cosmicpilot
           older-than: 90 days
           delete-orphaned-images: true
           keep-n-tagged: 7
